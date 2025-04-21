@@ -44,9 +44,3 @@ Maintaining $sign(\cdot)$ function in forward propagation, methods
 ###
 
 
-
-
-
-
-
-
