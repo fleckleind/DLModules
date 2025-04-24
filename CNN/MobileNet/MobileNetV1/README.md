@@ -17,7 +17,7 @@ The depthwise convolution is defined as:
 ```math
 \hat{G}_{k,l,m}=\sum_{i,h}\hat{K}_{i,j,m}\cdot F_{k+i-1, l+j-1, m}
 ```
-with kernel size $D_K\times D_K\times C_{in}$, and computational cost $D_K\cdot D_K\cdot C_{in}$. To combine the filtering features, a pointwise convolution is needed to create new features, with computational cost $C_{in}\times C_{out}\times D_F\times D_F$.
+with kernel size $D_K\times D_K\times C_{in}$, and computational cost $D_K\cdot D_K\cdot C_{in}\cdot D_F\cdot D_F$. To combine the filtering features, a pointwise convolution is needed to create new features, with computational cost $C_{in}\times C_{out}\times D_F\times D_F$.
 
 ## Hyper-Parameters: Multiplier
 Width Multipler $\alpha$ is used to thin a network uniformly at each layer in the channel dimension, with typical setting of 1, 0.75, 0.5 and 0.25.  
