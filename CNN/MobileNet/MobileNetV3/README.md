@@ -11,7 +11,7 @@ Swish(x)=x\cdot\sigma(x)
 ```
 while improving accuracy, the $sigmoid(\cdot)$ funciton is more expensive to compute on mobile devices. Referring to piece-wise linear hard analog of $sigmoid(\cdot)$,
 ```math
-h-sigmoid(x)=frac{ReLU6(x+3)}{6}
+h-sigmoid(x)=\frac{ReLU6(x+3)}{6}
 ```
 then the hard version of $swish(\cdot)$ becomes
 ```math
