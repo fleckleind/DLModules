@@ -32,7 +32,7 @@ R\_ASPP_{1/8}(x_2)=Conv_{1\times1}(x_2)
 ```
 And branch 1/16 use SE-like structure, with first branch using $1\times1$ convolution, batchnormalize and $ReLU$ to adjust channel size, and second branch using adaptive average pooling, $1\times1$ convolution and $sigmoid$ to get attention map. 
 ```math
-R\_ASPP_{1/16}(x_4)=Sigmoid(Conv{1\times1}(AAP(x_4)))\cdot ReLU(BN(Conv_{1\times1}(x_4)))
+R\_ASPP_{1/16}(x_4)=Sigmoid(Conv_{1\times1}(AAP(x_4)))\cdot ReLU(BN(Conv_{1\times1}(x_4)))
 ```
 To add with branch 1/8 feature map, branch 1/16 output use bilinear interpolation for $2\times$ upsampling and $1\times1$ convolution to obtain the same shape. The final output is then upsampled to the original shape via $4\times$ bilinear interpolation.
 ```math
