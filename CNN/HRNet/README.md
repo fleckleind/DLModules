@@ -21,9 +21,6 @@ The representation heads of HRNet includes 3 categories:
 
 
 ## Reference
-Papers:
+[official implementation](https://github.com/HRNet)  
 [Deep High-Resolution Representation Learning
- for Visual Recognition](https://arxiv.org/pdf/1908.07919)  
-
-Repositories:
-[https://github.com/WZMIAOMIAO/deep-learning-for-image-processing/tree/master/pytorch_keypoint/HRNet](https://github.com/WZMIAOMIAO/deep-learning-for-image-processing/tree/master/pytorch_keypoint/HRNet)
+ for Visual Recognition](https://arxiv.org/pdf/1908.07919)
