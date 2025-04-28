@@ -10,10 +10,13 @@ $N_{sr}$ is the subnetwork in the $s-th$ stage and $r$ resolution index, with re
 The resolution of first stage in HRNet is $4\times$ downsampled compared with the original input images. The resolutions for the parallel subnetworks of later stages consists of the resolutions from the previous stage and an extra lower one.  
 
 ## Multi-Scale Fusion
-HRNet introduces exchange units across parallel subnetworks to receive the information from other parallel subnetworks. To unify the different resolution of previous parallel feature maps, $3\times3$ convolution with stride as 2 is used to downsample, and $1\times1$ bilinear interpolation followed by a $1\times1$ convolution is used to upsample. The output representation is the sum of the transformed input feature maps.
+HRNet introduces exchange units across parallel subnetworks to receive the information from other parallel subnetworks. To unify the different resolution of previous parallel feature maps, $3\times3$ convolution with stride as 2 is used to downsample, and $1\times1$ bilinear interpolation followed by a $1\times1$ convolution is used to upsample. The output representation is the sum of transformed input feature maps.
 
 ## Representation Head
-The output of HRNet includes:
+The representation heads of HRNet includes 3 categories:
+1. only output the representation from the highest-resolution convolution stream.
+2. concatenate the feature maps from all stream with resolution unified with the highest one via bilinear interpolation, and use $1\times1$ convolution to adjust channel size.
+3. construct multi-level representations (feature pyramid) via downsampling the concatenated high-resolution representation.
 
 
 
