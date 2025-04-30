@@ -3,14 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-def conv3x3(in_ch, out_ch, stride=1):
-    return nn.Conv2d(in_ch, out_ch, kernel_size=3, stride=stride, padding=1, bias=False)
-
-
-def conv1x1(in_ch, out_ch, stride=1):
-    return nn.Conv2d(in_ch, out_ch, kernel_size=1, stride=stride, bias=False)
-
-
 class BinaryActivation(nn.Module):
     """
     Binary activation: Bi-Real Approximate Function
@@ -116,6 +108,7 @@ class BiResBlock(nn.Module):
         return out
 
 
+# ReActNet: https://github.com/liuzechun/ReActNet
 def binaryconv3x3(in_ch, out_ch, stride=1):
     return nn.Conv2d(in_ch, out_ch, kernel_size=3, stride=stride, padding=1, bias=False)
 
@@ -124,13 +117,13 @@ def binaryconv1x1(in_ch, out_ch, stride=1):
     return nn.Conv2d(in_ch, out_ch, kernel_size=1, stride=stride, bias=False)
 
 
-class BiMobile1Block(nn.Module):
+class BiMobileBlock(nn.Module):
     def __init__(self, in_ch, out_ch, stride=1):
-        super(BiMobile1Block).__init__()
+        super(BiMobileBlock, self).__init__()
         # config preparation
         self.binary_act = BinaryActivation()
         self.in_ch, self.out_ch, self.stride = in_ch, out_ch, stride
-        if self.in_ch != self.out_ch:
+        if self.stride != 1:
             self.pooling = nn.AvgPool2d(2, 2)
         # binary depth-wise conv
         self.move11 = LearnableBias(in_ch)
@@ -142,9 +135,9 @@ class BiMobile1Block(nn.Module):
             LearnableBias(in_ch), nn.PReLU(in_ch), LearnableBias(in_ch),)
         # binary point-wise conv
         self.move21 = LearnableBias(in_ch)
-        if in_ch == out_ch:
-            self.binary_pw = binaryconv1x1(in_ch, out_ch)
-            self.bn2 = nn.BatchNorm2d(out_ch)
+        if self.in_ch == self.out_ch:
+            self.binary_pw = nn.Sequential(
+                binaryconv1x1(in_ch, out_ch), nn.BatchNorm2d(out_ch),)
         else:
             self.binary_pw1 = nn.Sequential(
                 binaryconv1x1(in_ch, in_ch), nn.BatchNorm2d(in_ch),)
@@ -154,7 +147,7 @@ class BiMobile1Block(nn.Module):
             LearnableBias(out_ch), nn.PReLU(out_ch), nn.BatchNorm2d(out_ch),)
 
     def forward(self, x):
-        out1 = self.binary_3x3(self.binary_act(self.move11))
+        out1 = self.binary_3x3(self.binary_act(self.move11(x)))
         if self.stride == 2:
             x = self.pooling(x)
         out1 = self.act1(x + out1)
@@ -165,7 +158,7 @@ class BiMobile1Block(nn.Module):
         else:
             assert self.out_ch == self.in_ch * 2
             out2_1 = self.binary_pw1(out2) + out1
-            out2_2 = self.binary_pw2(out2) + out2
+            out2_2 = self.binary_pw2(out2) + out1
             out2 = torch.cat((out2_1, out2_2), dim=1)
         out2 = self.act2(out2)
         return out2
