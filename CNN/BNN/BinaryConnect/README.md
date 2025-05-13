@@ -18,10 +18,10 @@ w_b=
 where $w_b$ is binarized weight and $w$ real-valued weight. An alternative allowing a finer and more correct averaging process is to binarize stochastically:
 ```math
 w_b=
-\begin{case}
+\begin{cases}
 +1 & \text{with probability } p=\sigma(w), \\
 -1 & \text{with probability } 1-p.
-\end{case}
+\end{cases}
 ```
 and $sigma{\cdot}$ is the hard sigmoid function, far less computationally expensive (both in software and specialized hardware implementations):
 ```math
