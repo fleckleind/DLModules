@@ -38,3 +38,6 @@ STE(x)=\frac{\partial Approx(x)}{\partial x}=
 Bitwise Neural Networks contains two steps to train the BNN model:
 1. Real-value networks with weight compression, with weight values in the range of $\[-1,+1\]$.
 2. Initialize bitwise neural network with real-valued parameters, and adopt training strategy similar to STE.
+
+## Reference
+[A comprehensive review of Binary Neural Network](https://arxiv.org/pdf/2110.06804)
