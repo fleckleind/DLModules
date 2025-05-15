@@ -53,3 +53,34 @@ class SelfAttentionV3(nn.Module):
         attn_weight = self.attn_dropout(torch.softmax(attn_weight, dim=-1))
         output = attn_weight @ v
         return output
+
+
+class MultiHeadAttention(nn.Module):
+    def __init__(self, hidden_dim, num_heads, attn_dropout=0.1, *args, **kwargs):
+        super(MultiHeadAttention, self).__init__()
+        self.hidden_dim = hidden_dim
+        self.head_dim = hidden_dim // num_heads
+        self.attention_dropout = nn.Dropout(attn_dropout)
+
+        self.q_proj = nn.Linear(hidden_dim, hidden_dim)
+        self.k_proj = nn.Linear(hidden_dim, hidden_dim)
+        self.v_proj = nn.Linear(hidden_dim, hidden_dim)
+        self.o_proj = nn.Linear(hidden_dim, hidden_dim)
+
+    def forward(self, x, attn_mask=None):
+        batch, seq_len, _ = x.shape
+        q, k, v = self.q_proj(x), self.k_proj(x), self.v_proj(x)
+        # (batch, seq_len, hid_dim)->(batch, head_num, seq_len, head_dim)
+        q_state = q.view(batch, seq_len, -1, self.head_dim).transpose(1, 2)
+        k_state = k.view(batch, seq_len, -1, self.head_dim).transpose(1, 2)
+        v_state = v.view(batch, seq_len, -1, self.head_dim).transpose(1, 2)
+        # attn: (batch, head, seq, dim)->(batch, head, seq, seq)
+        attn = q_state @ k_state.transpose(-1, -2) / math.sqrt(self.head_dim)
+        if attn_mask is not None:
+            attn = attn.masked_fill(attn_mask == 0, float('-inf'))
+        # attn: (batch, head, seq, seq)->(batch, head, seq, dim)
+        attn = self.attention_dropout(torch.softmax(attn, dim=-1))
+        output = (attn @ v_state).transpose(1, 2).contiguous()
+        output = output.view(batch, seq_len, -1)
+        return self.o_proj(output)
+        
