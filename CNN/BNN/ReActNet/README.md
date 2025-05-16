@@ -8,4 +8,4 @@ ReActNet: generalize traditional Sign and PReLU functions as RSign and RPReLU fo
 
 
 ## Reference
-[ReActNet: official repository](https://github.com/liuzechun/ReActNet/tree/master)
+[ReActNet: official implementation.](https://github.com/liuzechun/ReActNet/tree/master)
