@@ -1,7 +1,7 @@
 # Bi-Real Net
 [Bi-Real Net: Enhancing the Performance of 1-bit CNNs With Improved Representational Capability and Advanced Training Algorithm](https://openaccess.thecvf.com/content_ECCV_2018/papers/zechun_liu_Bi-Real_Net_Enhancing_ECCV_2018_paper.pdf)
 
-Bi-Real Net: connect the real activations to activations, after 1-bit convolution and/or BatchNorm layer and before the sign function, of the consecutive block through an identity shortcut.
+Bi-Real Net: connect the real activations to activations, after 1-bit convolution and/or BatchNorm layer and before the sign function, of the consecutive block through an identity shortcut, [official repository](https://github.com/liuzechun/Bi-Real-net).
 
 ## 1-bit CNNs
 The binary activation and weight are obtained through a sign function,
