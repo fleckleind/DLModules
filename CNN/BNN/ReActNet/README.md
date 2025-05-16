@@ -41,7 +41,7 @@ with $\gamma$ shigting the input distribuiton to find a best point to use $\beta
 ## Distribution Loss
 Distributional Loss: binary neural networks can learn similar distributions as real-valued networks, formulated as:
 ```math
-L_{Distribution}=-\frac{1}{n}\sum_c\sum_{i=1}^n p_c^{R_\theta}(X_i)log(\frac{p_c^{B_\theta(X_i)}}{p_c^{R_\theta}(X_i)})
+L_{Distribution}=-\frac{1}{n}\sum_c\sum_{i=1}^n p_c^{R_\theta}(X_i)log(\frac{p_c^{B_\theta}(X_i)}{p_c^{R_\theta}(X_i)})
 ```
 which is based on KL divergence between the softmax output $p_c$ of real-valued network $R_\theta$ and binary network $B_\theta$.
 
