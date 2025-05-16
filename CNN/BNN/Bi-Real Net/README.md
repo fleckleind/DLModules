@@ -1,7 +1,7 @@
 # Bi-Real Net
 [Bi-Real Net: Enhancing the Performance of 1-bit CNNs With Improved Representational Capability and Advanced Training Algorithm](https://openaccess.thecvf.com/content_ECCV_2018/papers/zechun_liu_Bi-Real_Net_Enhancing_ECCV_2018_paper.pdf)
 
-Bi-Real Net: connect the real activations to activations, after 1-bit convolution and/or BatchNorm layer and before the sign function, of the consecutive block through an identity shortcut, [official repository](https://github.com/liuzechun/Bi-Real-net).
+Bi-Real Net: connect the real activations to activations, after 1-bit convolution and/or BatchNorm layer and before the sign function, of the consecutive block through an identity shortcut.
 
 ## 1-bit CNNs
 The binary activation and weight are obtained through a sign function,
@@ -61,3 +61,6 @@ where $\bar{\theta}^{l,t}$ is associated with the magnitude of $W_r^{l,t}$, and
 
 ### Clip Initialization
 Bi-Real Net propose to replace $ReLU$ with $clip(-1,x,1)$ to pre-train the real-valued CNN model, as the activation of the $clip$ function is closer to the sign function than $ReLU$.
+
+## Reference
+[Bi-Real Net: official repository](https://github.com/liuzechun/Bi-Real-net)
