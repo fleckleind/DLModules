@@ -63,4 +63,4 @@ where $\bar{\theta}^{l,t}$ is associated with the magnitude of $W_r^{l,t}$, and
 Bi-Real Net propose to replace $ReLU$ with $clip(-1,x,1)$ to pre-train the real-valued CNN model, as the activation of the $clip$ function is closer to the sign function than $ReLU$.
 
 ## Reference
-[Bi-Real Net: official repository](https://github.com/liuzechun/Bi-Real-net)
+[Bi-Real Net: official implementation.](https://github.com/liuzechun/Bi-Real-net)
