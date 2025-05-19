@@ -5,6 +5,7 @@ class LearnablePositionEncoding(nn.Module):
     def __init__(self, max_len, d_model):
         super(LearnablePositionEncoding, self).__init__()
         self.positional_embeddings = nn.Embedding(max_len, d_model)
+        nn.init.constant_(self.positional_embeddings.weight, 0.)
 
     def forward(self, x):
         # position: (batch_size, seq_len)
