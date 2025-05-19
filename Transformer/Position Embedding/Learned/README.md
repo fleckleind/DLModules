@@ -1,2 +1,3 @@
 # Learned Position Encoding
-[Convolutional Sequence to Sequence Learning](https://proceedings.mlr.press/v70/gehring17a/gehring17a.pdf)
+
+Learned Positional Encoding: assign a learnable embedding to each position, and optimize such embeddings when training.
