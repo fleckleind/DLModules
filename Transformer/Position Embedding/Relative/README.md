@@ -18,3 +18,6 @@ a_{ij}^K = w_{clip(j-i, k)}^K, \quad
 a_{ij}^V = w_{clip(j-i, k)}^V
 ```
 where $clip$ is defined as $clip(x,k)=max(-k, min(k, x))$.
+
+## Reference
+[Repository: Transformer_Relative_Position_Self_Attention](https://github.com/evelinehong/Transformer_Relative_Position_PyTorch/tree/master)
