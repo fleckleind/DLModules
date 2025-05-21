@@ -55,4 +55,5 @@ The process of rotary transformation is shown as follows:
 
 
 ## Reference
-[https://zhuanlan.zhihu.com/p/642884818](https://zhuanlan.zhihu.com/p/642884818)
+[https://zhuanlan.zhihu.com/p/642884818](https://zhuanlan.zhihu.com/p/642884818)  
+[https://github.com/meta-llama/llama/blob/main/llama/model.py](https://github.com/meta-llama/llama/blob/main/llama/model.py)
