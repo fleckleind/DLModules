@@ -97,4 +97,67 @@ class BiResBlock(nn.Module):
 
     def forward(self, x):
         return self.conv2(self.conv1(x)) + self.resd(x)
+
+
+class ReActConv(nn.Module):
+    def __init__(self, in_ch, out_ch, step=1):
+        super(ReActConv, self).__init__()
+        self.in_ch, self.out_ch = in_ch, out_ch
+        if step == 1:
+            self.conv1 = nn.Sequential(nn.Conv3d(
+                in_ch, in_ch, kernel_size=3, stride=1, padding=1, bias=False), nn.BatchNorm3d(in_ch))
+            if out_ch == in_ch * 2:
+                self.conv2_ch1 = nn.Sequential(nn.Conv3d(
+                    in_ch, in_ch, kernel_size=1, bias=False), nn.BatchNorm3d(in_ch))
+                self.conv2_ch2 = nn.Sequential(nn.Conv3d(
+                    in_ch, in_ch, kernel_size=1, bias=False), nn.BatchNorm3d(in_ch))
+            else:
+                self.conv2 = nn.Sequential(nn.Conv3d(
+                    in_ch, out_ch, kernel_size=1, bias=False), nn.BatchNorm3d(out_ch))
+                if out_ch == in_ch:
+                    self.resd = nn.Identity()
+                else:
+                    self.resd = nn.Sequential(nn.Conv3d(
+                        in_ch, out_ch, kernel_size=1, bias=False), nn.BatchNorm3d(out_ch),)
+        else:
+            self.conv1 = nn.Sequential(HardBinaryConv3d(
+                in_ch, in_ch, kernel_size=3, stride=1, padding=1), nn.BatchNorm3d(in_ch))
+            if out_ch == in_ch * 2:
+                self.conv2_ch1 = nn.Sequential(HardBinaryConv3d(
+                    in_ch, in_ch, kernel_size=1, stride=1, padding=0), nn.BatchNorm3d(in_ch))
+                self.conv2_ch2 = nn.Sequential(HardBinaryConv3d(
+                    in_ch, in_ch, kernel_size=1, stride=1, padding=0), nn.BatchNorm3d(in_ch))
+            else:
+                self.conv2 = nn.Sequential(HardBinaryConv3d(
+                    in_ch, out_ch, kernel_size=1, stride=1, padding=0), nn.BatchNorm3d(out_ch))
+                if out_ch == in_ch:
+                    self.resd = nn.Identity()
+                else:
+                    self.resd = nn.Sequential(HardBinaryConv3d(
+                    in_ch, out_ch, kernel_size=1, stride=1, padding=0), nn.BatchNorm3d(out_ch),)
+                        
+        self.depthPre = nn.Sequential(LearnableBias(in_ch), BinaryActivation(),)
+        self.depthAct = nn.Sequential(LearnableBias(in_ch), nn.PReLU(in_ch), LearnableBias(in_ch),)
+        self.pointPre = nn.Sequential(LearnableBias(in_ch), BinaryActivation(),)
+        self.pointAct = nn.Sequential(LearnableBias(out_ch), nn.PReLU(out_ch), LearnableBias(out_ch),)
+
+    def forward(self, x):
+        out1 = self.depthAct(x + self.conv1(self.depthPre(x)))
+        out2 = self.pointPre(out1)
+        if self.out_ch == self.in_ch * 2:
+            out2 = torch.cat([self.conv2_ch1(out2)+out1, self.conv2_ch2(out2)+out1], dim=1)
+        else:
+            out2 = self.resd(out1) + self.conv2(out2)
+        out2 = self.pointAct(out2)
+        return out2
+
+
+class ReActBlock(nn.Module):
+    def __init__(self, in_ch, out_ch, step=1):
+        super(ReActBlock, self).__init__()
+        self.layer1 = ReActConv(in_ch, out_ch, step)
+        self.layer2 = ReActConv(out_ch, out_ch, step)
+
+    def forward(self, x):
+        return self.layer2(self.layer1(x))
       
